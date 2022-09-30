@@ -1,0 +1,2 @@
+from .productViewCrud import product_api_view
+from .productViewCrud import product_detail_view

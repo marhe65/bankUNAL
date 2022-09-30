@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,13 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5#mcvca6af+%eek0h331ze9&v^ozk6997!(a3^+804+ch-0)7)'
+SECRET_KEY = 'django-insecure-bm5i6t8x%avj30mvd!*y1@z4yd3cpfporkn9_@qb($5e8j8uwk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -41,17 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'authApp',
+    'productApp',
+    'corsheaders',
 ]
 
-JWT = {
-'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-'ROTATE_REFRESH_TOKENS': False,
-'BLACKLIST_AFTER_ROTATION': True,
-'UPDATE_LAST_LOGIN': False,
-'ALGORITHM': 'HS256',
-'USER_ID_FIELD': 'id',
-'USER_ID_CLAIM': 'user_id',
+SIMPLE_JWT = {
+ 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+ 'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+ 'ROTATE_REFRESH_TOKENS': False,
+ 'BLACKLIST_AFTER_ROTATION': True,
+ 'UPDATE_LAST_LOGIN': False,
+ 'ALGORITHM': 'HS256',
+ 'USER_ID_FIELD': 'id',
+ 'USER_ID_CLAIM': 'user_id',
 }
 
 MIDDLEWARE = [
@@ -62,15 +64,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 REST_FRAMEWORK = {
-'DEFAULT_PERMISSION_CLASSES': (
-'rest_framework.permissions.AllowAny',
-),
-'DEFAULT_AUTHENTICATION_CLASSES': (
-'rest_framework_simplejwt.authentication.JWTAuthentication',
-)
+ 'DEFAULT_PERMISSION_CLASSES': (
+ 'rest_framework.permissions.AllowAny',
+ ),
+ 'DEFAULT_AUTHENTICATION_CLASSES': (
+ 'rest_framework_simplejwt.authentication.JWTAuthentication',
+ )
 }
 
 AUTH_USER_MODEL = 'authApp.User'
@@ -100,14 +103,14 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-'default': {
-'ENGINE': 'django.db.backends.postgresql_psycopg2',
-'NAME': 'd3qb6ur02s6hg8',
-'USER': 'bduzecywkjlaui',
-'PASSWORD': '41415692f090ac5aea51ec21cd4877c4dfc7b87ce292aebe05ad65acce0b84c4',
-'HOST': 'ec2-52-207-15-147.compute-1.amazonaws.com',
-'PORT': '5432',
-}
+    'default': {
+    'ENGINE': 'ec2-52-207-15-147.compute-1.amazonaws.com',
+    'NAME': 'd3qb6ur02s6hg8',
+    'USER': 'bduzecywkjlaui',
+    'PASSWORD': '41415692f090ac5aea51ec21cd4877c4dfc7b87ce292aebe05ad65acce0b84c4',
+    'HOST': 'ec2-52-70-45-163.compute-1.amazonaws.com',
+    'PORT': '5432',
+    }
 }
 
 
@@ -151,3 +154,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import django_heroku
+django_heroku.settings(locals())
